@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Github, LogIn, Mail } from "lucide-react";
+import { LogIn, Mail } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -44,19 +44,6 @@ const SignIn = () => {
     }
   };
 
-  const handleGithubSignIn = async () => {
-    setIsLoading(true);
-    try {
-      // Implement GitHub sign-in logic here
-      toast.success("Successfully signed in with GitHub!");
-      navigate("/");
-    } catch (error) {
-      toast.error("Failed to sign in with GitHub. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className="container mx-auto flex items-center justify-center min-h-screen px-4 py-12">
       <Card className="w-full max-w-md">
@@ -65,26 +52,15 @@ const SignIn = () => {
           <CardDescription>Choose your preferred sign in method</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={handleGoogleSignIn}
-              disabled={isLoading}
-            >
-              <Mail className="mr-2 h-4 w-4" />
-              Google
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={handleGithubSignIn}
-              disabled={isLoading}
-            >
-              <Github className="mr-2 h-4 w-4" />
-              GitHub
-            </Button>
-          </div>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={handleGoogleSignIn}
+            disabled={isLoading}
+          >
+            <Mail className="mr-2 h-4 w-4" />
+            Sign in with Google
+          </Button>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
