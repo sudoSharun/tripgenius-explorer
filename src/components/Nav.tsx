@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import {
   LogIn,
@@ -13,13 +13,14 @@ import {
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Temporary state for demo
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const handleLogin = () => {
-    setIsAuthenticated(true);
+    navigate("/signin");
   };
 
   const handleLogout = () => {
