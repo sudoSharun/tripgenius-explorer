@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Check, Loader2, MapPin, Plane, Calendar, Sparkles } from "lucide-react";
+import { Check, Loader2, MapPin, Plane, Calendar, Sparkles, Globe2, Wallet, Star, PlusCircle, MinusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,11 +19,23 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { format, addDays } from "date-fns";
+import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { DateRange } from "react-day-picker";
 
-type TravelTone = "Adventure" | "Relaxation" | "Family" | "Honeymoon";
+type TravelTone = 
+  | "Adventure"
+  | "Relaxation"
+  | "Family"
+  | "Honeymoon"
+  | "Solo Travel"
+  | "Luxury Escape"
+  | "Spiritual Retreat"
+  | "Nature & Wildlife"
+  | "Cultural & Historical"
+  | "Wellness & Spa"
+  | "Road Trip"
+  | "Backpacking";
 
 const TripPlanner = () => {
   const [from, setFrom] = useState("");
@@ -35,6 +47,8 @@ const TripPlanner = () => {
     to: undefined,
   });
   const [loading, setLoading] = useState(false);
+  const [unlimited, setUnlimited] = useState(false);
+  const [customBudget, setCustomBudget] = useState("");
 
   const handleGenerateItinerary = () => {
     setLoading(true);
@@ -44,12 +58,34 @@ const TripPlanner = () => {
     }, 2000);
   };
 
+  const travelStyles: { type: TravelTone; icon: JSX.Element }[] = [
+    { type: "Adventure", icon: <Globe2 className="w-4 h-4" /> },
+    { type: "Relaxation", icon: <Star className="w-4 h-4" /> },
+    { type: "Family", icon: <Star className="w-4 h-4" /> },
+    { type: "Honeymoon", icon: <Star className="w-4 h-4" /> },
+    { type: "Solo Travel", icon: <Star className="w-4 h-4" /> },
+    { type: "Luxury Escape", icon: <Star className="w-4 h-4" /> },
+    { type: "Spiritual Retreat", icon: <Star className="w-4 h-4" /> },
+    { type: "Nature & Wildlife", icon: <Star className="w-4 h-4" /> },
+    { type: "Cultural & Historical", icon: <Star className="w-4 h-4" /> },
+    { type: "Wellness & Spa", icon: <Star className="w-4 h-4" /> },
+    { type: "Road Trip", icon: <Star className="w-4 h-4" /> },
+    { type: "Backpacking", icon: <Star className="w-4 h-4" /> },
+  ];
+
   return (
     <div className="max-w-4xl mx-auto">
       <Card className="bg-white/80 backdrop-blur-sm border-none shadow-xl rounded-2xl transition-all duration-300 hover:shadow-2xl">
-        <CardHeader className="text-center space-y-2">
-          <CardTitle className="text-3xl font-bold text-teal mb-2">Design Your Perfect Journey</CardTitle>
-          <CardDescription className="text-gray-600">Let AI craft your ideal travel experience</CardDescription>
+        <CardHeader className="text-center space-y-4 relative overflow-hidden pb-8">
+          <div className="absolute inset-0 bg-gradient-to-r from-coral/5 to-teal/5 animate-gradient" />
+          <div className="relative animate-fade-up">
+            <CardTitle className="text-4xl md:text-5xl font-bold text-teal mb-4 leading-tight">
+              Where Will Your Next
+              <br />
+              <span className="text-coral">Adventure Take You?</span>
+            </CardTitle>
+            <CardDescription className="text-lg text-gray-600">Let AI craft your perfect journey, tailored just for you</CardDescription>
+          </div>
         </CardHeader>
         <CardContent className="space-y-8">
           {/* Destination Selection */}
@@ -122,47 +158,105 @@ const TripPlanner = () => {
             </Popover>
           </div>
 
-          {/* Budget Slider */}
+          {/* Budget Selection */}
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <Label className="text-sm font-medium text-gray-700">Budget (USD)</Label>
-              <span className="text-lg font-semibold text-coral transition-all duration-300">
-                ${budget[0].toLocaleString()}
-              </span>
+              <Label className="text-sm font-medium text-gray-700">Budget</Label>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setUnlimited(!unlimited)}
+                className="text-sm text-coral hover:text-coral/80"
+              >
+                {unlimited ? (
+                  <MinusCircle className="mr-2 h-4 w-4" />
+                ) : (
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                )}
+                {unlimited ? "Set Budget Limit" : "No Budget Limit"}
+              </Button>
             </div>
-            <Slider
-              value={budget}
-              onValueChange={setBudget}
-              max={20000}
-              step={100}
-              className="py-4"
-            />
-            <div className="flex justify-between text-xs text-gray-500">
-              <span>$0</span>
-              <span>$20,000</span>
-            </div>
+            
+            {!unlimited && (
+              <>
+                <div className="flex items-center gap-4">
+                  <Slider
+                    value={budget}
+                    onValueChange={setBudget}
+                    max={50000}
+                    step={100}
+                    className="flex-1"
+                  />
+                  <div className="relative w-32">
+                    <Input
+                      type="number"
+                      value={customBudget || budget[0]}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        if (!isNaN(value)) {
+                          setCustomBudget(e.target.value);
+                          setBudget([value]);
+                        }
+                      }}
+                      className="pl-6 text-right"
+                    />
+                    <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center text-sm text-gray-500">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setBudget([3000])}
+                    className="text-xs"
+                  >
+                    Budget
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setBudget([10000])}
+                    className="text-xs"
+                  >
+                    Standard
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setBudget([25000])}
+                    className="text-xs"
+                  >
+                    Luxury
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Travel Style Selection */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {["Adventure", "Relaxation", "Family", "Honeymoon"].map((style) => (
-              <Button
-                key={style}
-                variant={travelTone === style ? "default" : "outline"}
-                className={cn(
-                  "h-auto py-4 px-6 transition-all duration-300 hover:scale-105",
-                  travelTone === style 
-                    ? "bg-gradient-to-r from-coral to-coral/80 text-white shadow-lg hover:shadow-xl" 
-                    : "hover:border-coral/50"
-                )}
-                onClick={() => setTravelTone(style as TravelTone)}
-              >
-                {style}
-                {travelTone === style && (
-                  <Check className="ml-2 h-4 w-4 animate-fade-in" />
-                )}
-              </Button>
-            ))}
+          <div className="space-y-4">
+            <Label className="text-sm font-medium text-gray-700">Travel Style</Label>
+            <div className="flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+              {travelStyles.map(({ type, icon }) => (
+                <Button
+                  key={type}
+                  variant={travelTone === type ? "default" : "outline"}
+                  className={cn(
+                    "h-auto py-2 px-4 whitespace-nowrap transition-all duration-300 hover:scale-105",
+                    travelTone === type 
+                      ? "bg-gradient-to-r from-coral to-coral/80 text-white shadow-lg hover:shadow-xl" 
+                      : "hover:border-coral/50"
+                  )}
+                  onClick={() => setTravelTone(type)}
+                >
+                  {icon}
+                  <span className="ml-2">{type}</span>
+                  {travelTone === type && (
+                    <Check className="ml-2 h-4 w-4 animate-fade-in" />
+                  )}
+                </Button>
+              ))}
+            </div>
           </div>
         </CardContent>
 
@@ -192,6 +286,10 @@ const TripPlanner = () => {
                     </span>
                   </div>
                 )}
+                <div className="flex items-center gap-2">
+                  <Wallet className="h-4 w-4 text-coral" />
+                  <span>{unlimited ? "Unlimited Budget" : `Budget: $${budget[0].toLocaleString()}`}</span>
+                </div>
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-coral" />
                   <span>{travelTone} Style</span>
