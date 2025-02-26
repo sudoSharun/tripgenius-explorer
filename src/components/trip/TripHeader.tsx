@@ -8,9 +8,8 @@ import {
 const TripHeader = () => {
   return (
     <CardHeader className="text-center space-y-4 relative overflow-hidden pb-8">
-      <div className="absolute inset-0 bg-gradient-to-r from-coral/5 to-teal/5 animate-gradient" />
       <div className="relative animate-fade-up">
-        <CardTitle className="text-4xl md:text-5xl font-bold mb-4 leading-tight bg-gradient-to-r from-teal via-coral to-teal bg-clip-text text-transparent">
+        <CardTitle className="text-4xl md:text-5xl font-bold mb-4 leading-tight text-teal">
           Craft Your Dream Adventure
         </CardTitle>
         <CardDescription className="text-lg text-gray-600">
