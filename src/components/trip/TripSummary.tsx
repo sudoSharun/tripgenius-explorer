@@ -39,18 +39,25 @@ const TripSummary = ({ from, to, date, budget, unlimited, travelTone, shouldShow
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-coral" />
               <span>
-                {format(date.from, "MMM dd")} - {date.to ? format(date.to, "MMM dd, yyyy") : "..."}
+                {format(date.from, "MMM dd")} -{" "}
+                {date.to ? format(date.to, "MMM dd, yyyy") : "..."}
               </span>
             </div>
           )}
-          <div className="flex items-center gap-2">
-            <Wallet className="h-4 w-4 text-coral" />
-            <span>{unlimited ? "Unlimited Budget" : `Budget: $${budget[0].toLocaleString()}`}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-coral" />
-            <span>{travelTone} Style</span>
-          </div>
+          {(unlimited || budget[0] !== 5000) && (
+            <div className="flex items-center gap-2">
+              <Wallet className="h-4 w-4 text-coral" />
+              <span>
+                {unlimited ? "Unlimited Budget" : `Budget: $${budget[0].toLocaleString()}`}
+              </span>
+            </div>
+          )}
+          {travelTone !== "Adventure" && (
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-coral" />
+              <span>{travelTone} Style</span>
+            </div>
+          )}
         </div>
       </div>
     </CardContent>
