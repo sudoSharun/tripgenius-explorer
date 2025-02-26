@@ -32,7 +32,7 @@ const TripPlanner = () => {
     }, 2000);
   };
 
-  const showSummary = from || to || date?.from || budget[0] !== 5000 || travelTone !== "Adventure";
+  const showSummary = Boolean(from || to || date?.from || budget[0] !== 5000 || travelTone !== "Adventure");
 
   return (
     <div className="max-w-4xl mx-auto">

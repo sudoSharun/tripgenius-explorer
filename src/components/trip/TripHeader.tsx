@@ -12,8 +12,6 @@ const TripHeader = () => {
       <div className="relative animate-fade-up">
         <CardTitle className="text-4xl md:text-5xl font-serif font-bold mb-4 leading-tight bg-gradient-to-r from-teal via-coral to-teal bg-clip-text text-transparent">
           Craft Your Dream Adventure
-          <br />
-          with AI Precision
         </CardTitle>
         <CardDescription className="text-lg font-sans text-gray-600">
           Tell us your travel desires—we'll handle the magic.
